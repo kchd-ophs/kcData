@@ -6,7 +6,11 @@
 # tigris package website showing the availability of datasets by year:
 # https://github.com/walkerke/tigris
 
-get_geoids <- function(sf) {
+options(tigris_use_cache = TRUE)
+
+devtools::load_all()
+
+config_sf <- function(sf) {
   var <- colnames(sf)[grepl("^GEOID(10|20)?$", colnames(sf))]
 
   sf |>
@@ -37,37 +41,74 @@ geoid$county <- c(
 )
 
 # Tract
-yr <- 2011:2024
+# yr <- 2011:2024
+#
+# sftract <- lapply(yr, \(x) {
+#   get_kc_sf("tract", x, "city", "clipped")
+# })
+#
+# names(sftract) <- paste0("tract", yr)
+#
+# idtract <- lapply(sftract, get_geoids)
+#
+# df <- setmeup::batch_compare(idtract)
 
-sftract <- lapply(yr, \(x) {
-  sf <- get_kc_sf("tract", x, "city", "clipped")
-})
-names(sftract) <- paste0("tract", yr)
+tract2011 <- get_kc_sf(
+  geo = "tract",
+  year = 2011,
+  intersect = "city",
+  geometry = "clipped"
+)
 
-idtract <- lapply(sftract, get_geoids)
+tract2011 <- config_sf(tract2011)
 
-df <- setmeup::batch_compare(idtract)
+tract2020 <- get_kc_sf(
+  geo = "tract",
+  year = 2020,
+  intersect = "city",
+  geometry = "clipped"
+)
 
-geoid$tract2010 <- idtract$tract2011
+tract2020 <- config_sf(tract2020)
 
-geoid$tract2020 <- idtract$tract2020
+geoid$tract2010 <- tract2011
+
+geoid$tract2020 <- tract2020
 
 # ZCTA
-yr <- 2012:2024
+# yr <- 2012:2024
+#
+# sfzcta <- lapply(yr, \(x) {
+#   get_kc_sf("zcta", x, "city", "clipped")
+# })
+#
+# names(sfzcta) <- paste0("zcta", yr)
+#
+# idzcta <- lapply(sfzcta, get_geoids)
+#
+# df <- setmeup::batch_compare(idzcta)
 
-sfzcta <- lapply(yr, \(x) {
-  sf <- get_kc_sf("zcta", x, "city", "clipped")
-})
-names(sfzcta) <- paste0("zcta", yr)
+zcta2012 <- get_kc_sf(
+  geo = "zcta",
+  year = 2012,
+  intersect = "city",
+  geometry = "clipped"
+)
 
-idzcta <- lapply(sfzcta, get_geoids)
+zcta2012 <- config_sf(zcta2012)
 
-df <- setmeup::batch_compare(idzcta)
+zcta2020 <- get_kc_sf(
+  geo = "zcta",
+  year = 2020,
+  intersect = "city",
+  geometry = "clipped"
+)
 
-geoid$zcta2010 <- idzcta$zcta2012
+zcta2020 <- config_sf(zcta2020)
 
-geoid$zcta2020 <- idzcta$zcta2020
+geoid$zcta2010 <- zcta2012
+
+geoid$zcta2020 <- zcta2020
 
 # Save
 usethis::use_data(geoid, overwrite = T)
-
