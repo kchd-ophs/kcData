@@ -5,9 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/eliotmonaco/kcData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/eliotmonaco/kcData/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/eliotmonaco/kcData/graph/badge.svg)](https://app.codecov.io/gh/eliotmonaco/kcData)
+[![R-CMD-check](https://github.com/kchd-ophs/kcData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kchd-ophs/kcData/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/kchd-ophs/kcData/graph/badge.svg)](https://app.codecov.io/gh/kchd-ophs/kcData)
 <!-- badges: end -->
@@ -20,5 +18,5 @@ City.
 Install from GitHub:
 
 ``` r
-remotes::install_github("eliotmonaco/kcData")
+remotes::install_github("kchd-ophs/kcData")
 ```
