@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/eliotmonaco/kcData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/eliotmonaco/kcData/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/eliotmonaco/kcData/graph/badge.svg)](https://app.codecov.io/gh/eliotmonaco/kcData)
+[![Codecov test coverage](https://codecov.io/gh/kchd-ophs/kcData/graph/badge.svg)](https://app.codecov.io/gh/kchd-ophs/kcData)
 <!-- badges: end -->
 
 kcData simplifies downloading and using US Census Bureau data for Kansas City.
