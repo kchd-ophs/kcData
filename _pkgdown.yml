@@ -1,4 +1,4 @@
-url: https://eliotmonaco.github.io/kcData/
+url: https://kchd-ophs.github.io/kcData/
 template:
   bootstrap: 5
   light-switch: true
@@ -9,10 +9,11 @@ reference:
   - contents:
     - get_kc_pop
     - get_kc_sf
-    - return_popest_table
 
   - title: Datasets
   - contents:
     - geoid
-    - starts_with("popest_")
+    - geoid2
+    - intercensal_estimates_2010_2019
+    - vintage_2024_estimates
 
