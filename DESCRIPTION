@@ -1,6 +1,6 @@
 Package: kcData
 Title: Access Kansas City census data
-Version: 0.0.0.9008
+Version: 0.0.0.9009
 Authors@R: 
     person("Eliot", "Monaco", , "eliotmonaco@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5982-5854"))
