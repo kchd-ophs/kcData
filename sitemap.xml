@@ -1,15 +1,15 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://eliotmonaco.github.io/kcData/404.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/LICENSE-text.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/LICENSE.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/authors.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/index.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/reference/geoid.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/reference/get_kc_pop.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/reference/get_kc_sf.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/reference/index.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/reference/popest_ic20.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/reference/popest_v24.html</loc></url>
-<url><loc>https://eliotmonaco.github.io/kcData/reference/return_popest_table.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/404.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/LICENSE-text.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/LICENSE.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/authors.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/index.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/reference/geoid.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/reference/geoid2.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/reference/get_kc_pop.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/reference/get_kc_sf.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/reference/index.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/reference/intercensal_estimates_2010_2019.html</loc></url>
+<url><loc>https://kchd-ophs.github.io/kcData/reference/vintage_2024_estimates.html</loc></url>
 </urlset>
 

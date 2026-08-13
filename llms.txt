@@ -16,19 +16,19 @@ remotes::install_github("eliotmonaco/kcData")
 
 ## Functions
 
-- [`get_kc_pop()`](https://eliotmonaco.github.io/kcData/reference/get_kc_pop.md)
+- [`get_kc_pop()`](https://kchd-ophs.github.io/kcData/reference/get_kc_pop.md)
   : Get population data for Kansas City
-- [`get_kc_sf()`](https://eliotmonaco.github.io/kcData/reference/get_kc_sf.md)
+- [`get_kc_sf()`](https://kchd-ophs.github.io/kcData/reference/get_kc_sf.md)
   : Get simple features objects for Kansas City
-- [`return_popest_table()`](https://eliotmonaco.github.io/kcData/reference/return_popest_table.md)
-  : Get population estimates
 
 ## Datasets
 
-- [`geoid`](https://eliotmonaco.github.io/kcData/reference/geoid.md) :
+- [`geoid`](https://kchd-ophs.github.io/kcData/reference/geoid.md) :
   Geographic identifiers (GEOIDs)
-- [`popest_ic20`](https://eliotmonaco.github.io/kcData/reference/popest_ic20.md)
-  : Intercensal population estimates, 2010-2020
-- [`popest_v24`](https://eliotmonaco.github.io/kcData/reference/popest_v24.md)
+- [`geoid2`](https://kchd-ophs.github.io/kcData/reference/geoid2.md) :
+  KC-area GEOIDs
+- [`intercensal_estimates_2010_2019`](https://kchd-ophs.github.io/kcData/reference/intercensal_estimates_2010_2019.md)
+  : Intercensal population estimates, 2010-2019
+- [`vintage_2024_estimates`](https://kchd-ophs.github.io/kcData/reference/vintage_2024_estimates.md)
   : Vintage 2024 population estimates
 
