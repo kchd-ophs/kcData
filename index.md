@@ -9,5 +9,5 @@ Install from GitHub:
 
 ``` r
 
-remotes::install_github("eliotmonaco/kcData")
+remotes::install_github("kchd-ophs/kcData")
 ```
