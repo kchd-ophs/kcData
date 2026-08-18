@@ -1,9 +1,4 @@
-# Geographic identifiers (superseded)
-
-**This dataset has been superseded by
-[geoid2](https://kchd-ophs.github.io/kcData/reference/geoid2.md), which
-will eventually be renamed `geoid`, and the current `geoid` will be
-removed from the package.**
+# Geographic identifiers (GEOIDs)
 
 Geographic identifiers (GEOIDs) for Kansas City and other intersecting
 regions. For census tracts and ZCTAs, GEOIDs are included if 10% or more

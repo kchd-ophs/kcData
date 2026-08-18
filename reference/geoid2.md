@@ -1,7 +1,6 @@
-# Geographic identifiers
+# KC-area GEOIDs
 
-US Census Bureau geographic identifiers (GEOIDs) for areas that
-intersect with Kansas City at several levels of geography.
+Geographic identifiers (GEOIDs) for the Kansas City area.
 
 ## Usage
 
@@ -11,41 +10,41 @@ geoid2
 
 ## Format
 
-A list containing 8 dataframes.
+A list of dataframes.
 
 - state:
 
-  GEOID for Missouri
+  Missouri GEOID
 
 - cbsa:
 
-  GEOID for Kansas City, KS-MO (core based statistical area)
+  Kansas City, KS-MO, GEOID
 
 - place:
 
-  GEOID for Kansas City
+  Kansas City GEOID
 
 - county:
 
-  GEOIDs for counties intersecting with Kansas City
+  County GEOIDs and county FIPs codes
 
-- tract2010:
+- tract2011:
 
-  GEOIDs for census tracts intersecting with Kansas City (2010)
+  2011 census tract GEOIDs, tract codes, and proportion of area
+  overlapping with Kansas City
 
 - tract2020:
 
-  GEOIDs for census tracts intersecting with Kansas City (2020)
+  2020 census tract GEOIDs, tract codes, and proportion of area
+  overlapping with Kansas City
 
-- zcta2010:
+- zcta2012:
 
-  GEOIDs for ZIP code tabulation areas intersecting with Kansas City
-  (2010)
+  2012 ZCTA GEOIDs and proportion of area overlapping with Kansas City
 
 - zcta2020:
 
-  GEOIDs for ZIP code tabulation areas intersecting with Kansas City
-  (2020)
+  2020 ZCTA GEOIDs and proportion of area overlapping with Kansas City
 
 ## Source
 
@@ -53,12 +52,12 @@ US Census Bureau TIGER/Line Shapefiles
 
 ## Details
 
-Each element of `geoid2` is a dataframe containing GEOIDs for the areas
-within a given geography level that intersect with Kansas City.
-Additional details are included when available, such as area names, or
-useful, such as county FIPS or census tract codes. For census tracts and
-ZCTAs, the proportion of each area that overlaps with Kansas City is
-included.
+Each element of `geoid2` is a dataframe containing area names, if
+applicable, and GEOIDs for a given geography level. `place`, `county`,
+`tract2011`, and `tract2020` contain the commonly used shorter codes
+(i.e., without the state FIPS code) for those levels. `tract2011`,
+`tract2020`, `zcta2012`, and `zcta2020` contain a variable `overlap`
+which is the proportion of each area within the Kansas City boundary.
 
 See the US Census Bureau web page [Understanding Geographic
 Identifiers](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)
