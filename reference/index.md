@@ -10,9 +10,9 @@
 ## Datasets
 
 - [`geoid`](https://kchd-ophs.github.io/kcData/reference/geoid.md) :
-  Geographic identifiers (GEOIDs)
+  Geographic identifiers (superseded)
 - [`geoid2`](https://kchd-ophs.github.io/kcData/reference/geoid2.md) :
-  KC-area GEOIDs
+  Geographic identifiers
 - [`intercensal_estimates_2010_2019`](https://kchd-ophs.github.io/kcData/reference/intercensal_estimates_2010_2019.md)
   : Intercensal population estimates, 2010-2019
 - [`vintage_2024_estimates`](https://kchd-ophs.github.io/kcData/reference/vintage_2024_estimates.md)
