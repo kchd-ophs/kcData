@@ -103,13 +103,8 @@ get_kc_pop <- function(
   geoids = NULL,
   ...
 ) {
-  inst_tidycensus <- requireNamespace("tidycensus", quietly = TRUE)
-
-  if (!inst_tidycensus) {
-    stop("The tidycensus package must be installed to use this function.")
-  }
-
   geo <- match.arg(geo)
+
   var_match <- match.arg(var_match)
 
   # Get variable table

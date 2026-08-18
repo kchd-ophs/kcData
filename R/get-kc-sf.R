@@ -67,15 +67,12 @@ get_kc_sf <- function(
   intersect = c("city", "metro"),
   geometry = c("clipped", "full")
 ) {
-  inst_sf <- requireNamespace("sf", quietly = TRUE)
-  inst_tigris <- requireNamespace("tigris", quietly = TRUE)
-
-  if (!inst_sf | ! inst_tigris) {
-    stop("The sf and tigris packages must be installed to use this function.")
-  }
+  year <- as.numeric(year)
 
   geo <- match.arg(geo)
+
   intersect <- match.arg(intersect)
+
   geometry <- match.arg(geometry)
 
   cond1 <- all(!geo %in% c("cbsa", "place"), intersect == "city")
@@ -86,14 +83,14 @@ get_kc_sf <- function(
     # Download the Missouri places shapefile
     if (year > 2010) {
       sf1 <- get_sf(geo = "place", state = 29, year = year)
+    } else if (year == 2010) {
+      sf1 <- place2010
     } else {
       message(paste(
-        "`tigris::places()` is not available for years prior to 2011. The KC",
-        "places shapefile for 2011 is downloaded or used for finding the",
-        "intersection of smaller geographies instead."
+        "Place shapefiles prior to 2010 are not available. If they are needed,",
+        "create a GitHub issue to request their inclusion and describe the use",
+        "case."
       ))
-
-      sf1 <- get_sf(geo = "place", state = 29, year = 2011)
     }
 
     # Filter for the KC boundary
@@ -133,15 +130,7 @@ get_kc_sf <- function(
   }
 
   # Filter for geometries in `sf2` that share interior with `sf1`
-  sf2a <- sf::st_filter(sf2, sf1, .predicate = sf::st_intersects)
-
-  sf2b <- sf::st_filter(sf2, sf1, .predicate = sf::st_touches)
-
-  p <- "^GEOID(10|20)?$|IDFP00$|^ZCTA5CE00$"
-
-  var <- colnames(sf2a)[grepl(p, colnames(sf2a))]
-
-  sf2 <- sf2a[!sf2a[[var]] %in% sf2b[[var]], ]
+  sf2 <- filter_shared_interior(x = sf2, y = sf1)
 
   if (geometry == "full") {
     rownames(sf2) <- NULL
@@ -193,8 +182,21 @@ get_sf <- function(geo, state = NULL, year = NULL, county = NULL) {
     } else {
       NULL
     }
+
     tigris::zctas(starts_with = sw, year = year)
   }
+}
+
+filter_shared_interior <- function(x, y) {
+  int <- sf::st_filter(x, y, .predicate = sf::st_intersects)
+
+  tch <- sf::st_filter(x, y, .predicate = sf::st_touches)
+
+  p <- "^GEOID(10|20)?$|IDFP00$|^ZCTA5CE00$"
+
+  var <- colnames(int)[grepl(p, colnames(int))]
+
+  int[!int[[var]] %in% tch[[var]], ]
 }
 
 clip_sf <- function(x, y) {
@@ -206,4 +208,3 @@ clip_sf <- function(x, y) {
 
   y[!sf::st_is_empty(y), ]
 }
-

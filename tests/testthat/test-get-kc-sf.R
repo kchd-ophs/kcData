@@ -115,3 +115,12 @@ test_that("county metro full", {
   exp <- data$out$county$metro_full
   expect_equal(act, exp)
 })
+
+test_that("place 2010", {
+  act <- suppressWarnings(
+    get_kc_sf("place", 2010)
+  )
+  exp <- place2010
+  rownames(exp) <- NULL
+  expect_equal(act, exp)
+})

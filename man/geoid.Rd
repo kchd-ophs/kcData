@@ -3,7 +3,7 @@
 \docType{data}
 \name{geoid}
 \alias{geoid}
-\title{Geographic identifiers (GEOIDs)}
+\title{Geographic identifiers (superseded)}
 \format{
 A list of character vectors containing GEOIDs
 \describe{
@@ -26,6 +26,9 @@ US Census Bureau TIGER/Line Shapefiles
 geoid
 }
 \description{
+\strong{This dataset has been superseded by \link{geoid2}, which will eventually be
+renamed \code{geoid}, and the current \code{geoid} will be removed from the package.}
+
 Geographic identifiers (GEOIDs) for Kansas City and other intersecting
 regions. For census tracts and ZCTAs, GEOIDs are included if 10\% or more of a
 geometry's area is within the Kansas City boundary. See the US Census Bureau

@@ -1,6 +1,9 @@
-#' Geographic identifiers (GEOIDs)
+#' Geographic identifiers (superseded)
 #'
 #' @description
+#' **This dataset has been superseded by [geoid2], which will eventually be
+#' renamed `geoid`, and the current `geoid` will be removed from the package.**
+#'
 #' Geographic identifiers (GEOIDs) for Kansas City and other intersecting
 #' regions. For census tracts and ZCTAs, GEOIDs are included if 10% or more of a
 #' geometry's area is within the Kansas City boundary. See the US Census Bureau

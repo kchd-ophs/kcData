@@ -100,15 +100,15 @@ out <- list()
 # intersect = "city", boundary = "clipped"
 out$cbsa <- get_kc_sf("cbsa", 2024)
 out$place <- get_kc_sf("place", 2024)
-out$county$city_clipped <- get_kc_sf("county", 2024)
-out$zcta$city_clipped <- get_kc_sf("zcta", 2024)
+out$county$city_clipped <- get_kc_sf("county", 2024, "city", "clipped")
+out$zcta$city_clipped <- get_kc_sf("zcta", 2024, "city", "clipped")
 
 # intersect = "city", boundary = "full"
 out$county$city_full <- get_kc_sf("county", 2024, "city", "full")
 out$zcta$city_full <- get_kc_sf("zcta", 2024, "city", "full")
 
 # intersect = "metro", boundary = "clipped"
-out$zcta$metro_clipped <- get_kc_sf("zcta", 2024, "metro")
+out$zcta$metro_clipped <- get_kc_sf("zcta", 2024, "metro", "clipped")
 
 # intersect = "metro", boundary = "full"
 out$county$metro_full <- get_kc_sf("county", 2024, "metro", "full")
@@ -126,4 +126,3 @@ data <- list(
 )
 
 saveRDS(data, "tests/testthat/fixtures/data_get_kc_sf.rds")
-

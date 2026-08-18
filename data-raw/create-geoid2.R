@@ -12,8 +12,9 @@ devtools::load_all()
 # Function to convert sf to dataframe with GEOID and proportion of overlap
 config_sf <- function(sf) {
   var <- c(
-    "geoid" = colnames(sf)[grepl("^GEOID(10|20)?$", colnames(sf))],
-    "tract_code" = "TRACTCE"
+    "geoid" = colnames(sf)[grepl("^ZCTA5|^GEOID(10|20)?$", colnames(sf))][1],
+    "tract_code" = "TRACTCE",
+    "tract_code" = "TRACTCE10"
   )
 
   sf |>
@@ -52,14 +53,14 @@ geoid$county <- tribble(
 )
 
 # Tract
-tract2011 <- get_kc_sf(
+tract2010 <- get_kc_sf(
   geo = "tract",
-  year = 2011,
+  year = 2010,
   intersect = "city",
   geometry = "clipped"
 )
 
-tract2011 <- config_sf(tract2011)
+tract2010 <- config_sf(tract2010)
 
 tract2020 <- get_kc_sf(
   geo = "tract",
@@ -70,19 +71,19 @@ tract2020 <- get_kc_sf(
 
 tract2020 <- config_sf(tract2020)
 
-geoid$tract2011 <- tract2011
+geoid$tract2010 <- tract2010
 
 geoid$tract2020 <- tract2020
 
 # ZCTA
-zcta2012 <- get_kc_sf(
+zcta2010 <- get_kc_sf(
   geo = "zcta",
-  year = 2012,
+  year = 2010,
   intersect = "city",
   geometry = "clipped"
 )
 
-zcta2012 <- config_sf(zcta2012)
+zcta2010 <- config_sf(zcta2010)
 
 zcta2020 <- get_kc_sf(
   geo = "zcta",
@@ -93,7 +94,7 @@ zcta2020 <- get_kc_sf(
 
 zcta2020 <- config_sf(zcta2020)
 
-geoid$zcta2012 <- zcta2012
+geoid$zcta2010 <- zcta2010
 
 geoid$zcta2020 <- zcta2020
 
