@@ -67,6 +67,12 @@ get_kc_sf <- function(
   intersect = c("city", "metro"),
   geometry = c("clipped", "full")
 ) {
+  pkg <- requireNamespace("sf", quietly = TRUE)
+
+  if (!pkg) {
+    stop("The sf package must be installed to use this function.")
+  }
+
   year <- as.numeric(year)
 
   geo <- match.arg(geo)
@@ -81,16 +87,10 @@ get_kc_sf <- function(
 
   if (geo == "place" | cond1) {
     # Download the Missouri places shapefile
-    if (year > 2010) {
-      sf1 <- get_sf(geo = "place", state = 29, year = year)
-    } else if (year == 2010) {
+    if (year == 2010) {
       sf1 <- place2010
     } else {
-      message(paste(
-        "Place shapefiles prior to 2010 are not available. If they are needed,",
-        "create a GitHub issue to request their inclusion and describe the use",
-        "case."
-      ))
+      sf1 <- get_sf(geo = "place", state = 29, year = year)
     }
 
     # Filter for the KC boundary
