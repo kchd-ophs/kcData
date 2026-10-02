@@ -1,16 +1,7 @@
-# Geographic identifiers (superseded)
+# Geographic identifiers
 
-**This dataset has been superseded by
-[geoid2](https://kchd-ophs.github.io/kcData/reference/geoid2.md), which
-will eventually be renamed `geoid`, and the current `geoid` will be
-removed from the package.**
-
-Geographic identifiers (GEOIDs) for Kansas City and other intersecting
-regions. For census tracts and ZCTAs, GEOIDs are included if 10% or more
-of a geometry's area is within the Kansas City boundary. See the US
-Census Bureau page [Understanding Geographic
-Identifiers](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)
-for more information on GEOIDs.
+US Census Bureau geographic identifiers (GEOIDs) for areas that
+intersect with Kansas City at several levels of geography.
 
 ## Usage
 
@@ -20,42 +11,55 @@ geoid
 
 ## Format
 
-A list of character vectors containing GEOIDs
+A list containing 8 dataframes.
 
 - state:
 
-  2-digit state FIPS code
+  GEOID for Missouri
 
 - cbsa:
 
-  5-digit core-based statistical area code
+  GEOID for Kansas City, KS-MO (core based statistical area)
 
 - place:
 
-  2-digit state FIPS code and 5-digit place FIPS code
+  GEOID for Kansas City
 
 - county:
 
-  2-digit state FIPS code and 3-digit county FIPS code
+  GEOIDs for counties intersecting with Kansas City
 
 - tract2010:
 
-  2-digit state FIPS code, 3-digit county FIPS code, and 6-digit census
-  tract code, 2010-2019
+  GEOIDs for census tracts intersecting with Kansas City (2010)
 
 - tract2020:
 
-  2-digit state FIPS code, 3-digit county FIPS code, and 6-digit census
-  tract code, 2020-2024
+  GEOIDs for census tracts intersecting with Kansas City (2020)
 
 - zcta2010:
 
-  5-digit ZIP code tabulation area code, 2010-2019
+  GEOIDs for ZIP code tabulation areas intersecting with Kansas City
+  (2010)
 
 - zcta2020:
 
-  5-digit ZIP code tabulation area code, 2020-2024
+  GEOIDs for ZIP code tabulation areas intersecting with Kansas City
+  (2020)
 
 ## Source
 
 US Census Bureau TIGER/Line Shapefiles
+
+## Details
+
+Each element of `geoid` is a dataframe containing GEOIDs for the areas
+within a given geography level that intersect with Kansas City.
+Additional details are included when available, such as area names, or
+when useful, such as county FIPS or census tract codes. For census
+tracts and ZCTAs, the proportion of each area that overlaps with Kansas
+City is included.
+
+See the US Census Bureau web page [Understanding Geographic
+Identifiers](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)
+for more information on GEOIDs.

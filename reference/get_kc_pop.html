@@ -15,7 +15,7 @@ using the tidycensus package."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kcData</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9010</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9011</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,8 +136,7 @@ function.</p>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  vars <span class="op">=</span> <span class="st">"^B01"</span>,</span></span>
 <span class="r-in"><span>  var_match <span class="op">=</span> <span class="st">"regex"</span>,</span></span>
-<span class="r-in"><span>  geoids <span class="op">=</span> <span class="va">geoid</span><span class="op">$</span><span class="va">place</span>,</span></span>
-<span class="r-in"><span>  key <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span><span class="st">"census-api-key"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  geoids <span class="op">=</span> <span class="va">geoid</span><span class="op">$</span><span class="va">place</span><span class="op">$</span><span class="va">geoid</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Download ZCTA-level data from the 2023 5-year ACS</span></span></span>
@@ -147,8 +146,7 @@ function.</p>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2023</span>,</span></span>
 <span class="r-in"><span>  vars <span class="op">=</span> <span class="st">"B01001_001"</span>,</span></span>
 <span class="r-in"><span>  var_match <span class="op">=</span> <span class="st">"fixed"</span>,</span></span>
-<span class="r-in"><span>  geoids <span class="op">=</span> <span class="va">geoid</span><span class="op">$</span><span class="va">zcta2020</span>,</span></span>
-<span class="r-in"><span>  key <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span><span class="st">"census-api-key"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  geoids <span class="op">=</span> <span class="va">geoid</span><span class="op">$</span><span class="va">zcta2020</span><span class="op">$</span><span class="va">geoid</span><span class="op">[</span><span class="va">geoid</span><span class="op">$</span><span class="va">zcta2020</span><span class="op">$</span><span class="va">overlap</span> <span class="op">&gt;=</span> <span class="fl">.1</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Download census block-level data from the 2020 census</span></span></span>
@@ -168,8 +166,7 @@ function.</p>
 <span class="r-in"><span>  vars <span class="op">=</span> <span class="st">"P12_001N"</span>,</span></span>
 <span class="r-in"><span>  var_match <span class="op">=</span> <span class="st">"fixed"</span>,</span></span>
 <span class="r-in"><span>  geoids <span class="op">=</span> <span class="va">geoid_block</span>,</span></span>
-<span class="r-in"><span>  county <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^29"</span>, <span class="st">""</span>, <span class="va">geoid</span><span class="op">$</span><span class="va">county</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  key <span class="op">=</span> <span class="fu">keyring</span><span class="fu">::</span><span class="fu">key_get</span><span class="op">(</span><span class="st">"census-api-key"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  county <span class="op">=</span> <span class="va">geoid</span><span class="op">$</span><span class="va">county</span><span class="op">$</span><span class="va">county_fips</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
