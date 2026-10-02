@@ -1,4 +1,5 @@
 place2010 <- readRDS("data-raw/2010_place.rds")
+
 load("data/geoid.rda")
 
 usethis::use_data(

@@ -1,29 +1,35 @@
-#' Geographic identifiers (superseded)
+#' Geographic identifiers
 #'
 #' @description
-#' **This dataset has been superseded by [geoid2], which will eventually be
-#' renamed `geoid`, and the current `geoid` will be removed from the package.**
+#' US Census Bureau geographic identifiers (GEOIDs) for areas that intersect
+#' with Kansas City at several levels of geography.
 #'
-#' Geographic identifiers (GEOIDs) for Kansas City and other intersecting
-#' regions. For census tracts and ZCTAs, GEOIDs are included if 10% or more of a
-#' geometry's area is within the Kansas City boundary. See the US Census Bureau
-#' page [Understanding Geographic Identifiers][cen] for more information on
-#' GEOIDs.
+#' @details
+#' Each element of `geoid` is a dataframe containing GEOIDs for the areas
+#' within a given geography level that intersect with Kansas City. Additional
+#' details are included when available, such as area names, or when useful,
+#' such as county FIPS or census tract codes. For census tracts and ZCTAs, the
+#' proportion of each area that overlaps with Kansas City is included.
+#'
+#' See the US Census Bureau web page [Understanding Geographic Identifiers][cen]
+#' for more information on GEOIDs.
 #'
 #' [cen]:https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html
 #'
-#' @format A list of character vectors containing GEOIDs
+#' @format A list containing `r length(geoid)` dataframes.
 #' \describe{
-#'   \item{state}{2-digit state FIPS code}
-#'   \item{cbsa}{5-digit core-based statistical area code}
-#'   \item{place}{2-digit state FIPS code and 5-digit place FIPS code}
-#'   \item{county}{2-digit state FIPS code and 3-digit county FIPS code}
-#'   \item{tract2010}{2-digit state FIPS code, 3-digit county FIPS code, and
-#'   6-digit census tract code, 2010-2019}
-#'   \item{tract2020}{2-digit state FIPS code, 3-digit county FIPS code, and
-#'   6-digit census tract code, 2020-2024}
-#'   \item{zcta2010}{5-digit ZIP code tabulation area code, 2010-2019}
-#'   \item{zcta2020}{5-digit ZIP code tabulation area code, 2020-2024}
+#'   \item{state}{GEOID for Missouri}
+#'   \item{cbsa}{GEOID for Kansas City, KS-MO (core based statistical area)}
+#'   \item{place}{GEOID for Kansas City}
+#'   \item{county}{GEOIDs for counties intersecting with Kansas City}
+#'   \item{tract2010}{GEOIDs for census tracts intersecting with Kansas City
+#'   (2010)}
+#'   \item{tract2020}{GEOIDs for census tracts intersecting with Kansas City
+#'   (2020)}
+#'   \item{zcta2010}{GEOIDs for ZIP code tabulation areas intersecting with
+#'   Kansas City (2010)}
+#'   \item{zcta2020}{GEOIDs for ZIP code tabulation areas intersecting with
+#'   Kansas City (2020)}
 #' }
 #'
 #' @source US Census Bureau TIGER/Line Shapefiles

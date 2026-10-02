@@ -38,9 +38,15 @@ mock1 <- lapply(ls, \(args) {
   if (args$geography == "zcta") {
     if (args$year > 2019) {
       args <- args[!grepl("state", names(args))]
-      args <- append(args, list(zcta = geoid$zcta2020))
+      args <- append(
+        args,
+        list(zcta = geoid$zcta2020$geoid[geoid$zcta2020$overlap >= .1])
+      )
     } else {
-      args <- append(args, list(zcta = geoid$zcta2010))
+      args <- append(
+        args,
+        list(zcta = geoid$zcta2010$geoid[geoid$zcta2010$overlap >= .1])
+      )
     }
   }
 
@@ -60,9 +66,11 @@ ls <- list(
   vars = as.list(c("^B01003", rep("B01003_001", 6))),
   var_match = as.list(c("regex", rep("fixed", 6))),
   geoids = c(
-    as.list(rep(geoid$place, 3)),
-    list(geoid$county), list(geoid$tract2020),
-    list(geoid$zcta2020), list(geoid$zcta2010)
+    as.list(rep(geoid$place$geoid, 3)),
+    list(geoid$county$geoid),
+    list(geoid$tract2020$geoid[geoid$tract2020$overlap >= .1]),
+    list(geoid$zcta2020$geoid[geoid$zcta2020$overlap >= .1]),
+    list(geoid$zcta2010$geoid[geoid$zcta2010$overlap >= .1])
   ),
   key = keyring::key_get("census-api-key")
 )
@@ -94,7 +102,12 @@ ls <- list(
   year = 2020,
   vars = "P12_001N",
   var_match = "fixed",
-  geoids = list(geoid$place, geoid$county, geoid$tract2020, geoid$zcta2020),
+  geoids = list(
+    geoid$place$geoid,
+    geoid$county$geoid,
+    geoid$tract2020$geoid[geoid$tract2020$overlap >= .1],
+    geoid$zcta2020$geoid[geoid$zcta2020$overlap >= .1]
+  ),
   key = keyring::key_get("census-api-key")
 )
 
@@ -114,4 +127,3 @@ data <- list(
 )
 
 saveRDS(data, "tests/testthat/fixtures/data_get_kc_pop.rds")
-

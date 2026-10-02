@@ -13,7 +13,6 @@ reference:
   - title: Datasets
   - contents:
     - geoid
-    - geoid2
     - intercensal_estimates_2010_2019
     - vintage_2024_estimates
 
