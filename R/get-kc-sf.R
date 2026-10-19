@@ -88,77 +88,93 @@ get_kc_sf <- function(
   if (geo == "place" | cond1) {
     # Download the Missouri places shapefile
     if (year == 2010) {
-      sf1 <- place2010
+      sf <- place2010
     } else {
-      sf1 <- get_sf(geo = "place", state = 29, year = year)
+      sf <- get_sf(geo = "place", state = 29, year = year)
     }
 
     # Filter for the KC boundary
-    sf1 <- sf1[which(sf1$PLACEFP == "38000"), ]
+    sf <- sf[which(sf$PLACEFP == "38000"), ]
   } else if (geo == "cbsa" | cond2) {
     # Download the CBSA shapefile
-    sf1 <- get_sf(geo = "cbsa", year = year)
+    sf <- get_sf(geo = "cbsa", year = year)
 
-    # Filter for the KC metro region
-    sf1 <- sf1[which(grepl("Kansas City", sf1$NAME)), ]
+    # Filter for the KC metro boundary
+    sf <- sf[which(grepl("Kansas City", sf$NAME)), ]
   }
 
-  rownames(sf1) <- NULL
+  rownames(sf) <- NULL
 
   if (geo %in% c("cbsa", "place")) {
-    return(sf1)
+    return(sf)
+  } else {
+    parent_sf <- sf
   }
 
   # Download a smaller geography
   if (intersect == "city") {
-    sf2 <- get_sf(
-      geo = geo, state = 29, year = year, # MO
+    sf <- get_sf(
+      geo = geo,
+      state = 29, # MO only
+      year = year,
       county = c("037", "047", "095", "165")
     )
   } else if (intersect == "metro") {
-    sf2a <- get_sf(
-      geo = geo, state = 20, year = year, # KS
-      county = c("091", "103", "107", "121", "209")
-    )
+    ksco <- c("091", "103", "107", "121", "209")
 
-    sf2b <- get_sf(
-      geo = geo, state = 29, year = year, # MO
-      county = c("013", "025", "037", "047", "049", "095", "107", "165", "177")
-    )
+    moco <- c("013", "025", "037", "047", "049", "095", "107", "165", "177")
 
-    sf2 <- rbind(sf2a, sf2b)
+    sf <- rbind(
+      get_sf(geo = geo, state = 20, year = year, county = ksco),
+      get_sf(geo = geo, state = 29, year = year, county = moco)
+    )
   }
 
-  # Filter for geometries in `sf2` that share interior with `sf1`
-  sf2 <- filter_shared_interior(x = sf2, y = sf1)
+  # Filter for geometries in `sf` that share interior with `parent_sf`
+  p <- "^GEOID(10|20)?$|IDFP00$|^ZCTA5CE00$"
 
-  if (geometry == "full") {
-    rownames(sf2) <- NULL
+  id_var <- colnames(sf)[grepl(p, colnames(sf))]
 
-    sf2
-  } else if (geometry == "clipped") {
-    var <- paste0(intersect, "_area")
+  sf <- filter_shared_interior(
+    x = sf,
+    y = parent_sf,
+    var = id_var
+  )
 
-    cols <- colnames(sf2)
+  var <- paste0(intersect, "_area")
 
-    # Get the area of each geometry
-    sf2$area <- sf::st_area(sf2)
+  cols <- colnames(sf)
 
-    # Clip `sf2` using `sf1`
-    sf2 <- clip_sf(sf1, sf2)
+  # Get the area of each geometry
+  sf$area <- sf::st_area(sf)
 
-    # Get the area of the intersecting portion
-    sf2[[var]] <- sf::st_area(sf2)
+  # Clip `sf` using `parent_sf`
+  sf_clp <- clip_sf(parent_sf, sf)
 
-    cols <- c(
-      cols[!cols %in% "geometry"],
-      "area", var, "geometry"
-    )
-
-    rownames(sf2) <- NULL
-
-    sf2[, cols]
+  if (geometry == "clipped") {
+    sf <- sf_clp
   }
+
+  # Get the area of the intersecting portion
+  sf[[var]] <- sf::st_area(sf_clp)
+
+  # Filter out geometries with an intersection area of 0
+  sf <- sf[as.numeric(sf[[var]]) != 0, ]
+
+  # Find the proportion of overlap for each geometry
+  sf$overlap <- as.numeric(sf[[var]] / sf$area)
+
+  cols <- c(
+    cols[!cols %in% "geometry"],
+    "area",
+    var,
+    "overlap",
+    "geometry"
+  )
+
+  rownames(sf) <- NULL
+
+  sf[, cols]
 }
 
 get_sf <- function(geo, state = NULL, year = NULL, county = NULL) {
@@ -187,24 +203,16 @@ get_sf <- function(geo, state = NULL, year = NULL, county = NULL) {
   }
 }
 
-filter_shared_interior <- function(x, y) {
-  int <- sf::st_filter(x, y, .predicate = sf::st_intersects)
+filter_shared_interior <- function(x, y, var) {
+  x1 <- sf::st_filter(x, y, .predicate = sf::st_intersects)
 
-  tch <- sf::st_filter(x, y, .predicate = sf::st_touches)
+  x2 <- sf::st_filter(x, y, .predicate = sf::st_touches)
 
-  p <- "^GEOID(10|20)?$|IDFP00$|^ZCTA5CE00$"
-
-  var <- colnames(int)[grepl(p, colnames(int))]
-
-  int[!int[[var]] %in% tch[[var]], ]
+  x1[!x1[[var]] %in% x2[[var]], ]
 }
 
 clip_sf <- function(x, y) {
   y <- sf::st_intersection(x[, "geometry"], y)
 
-  y <- sf::st_collection_extract(y, "POLYGON")
-
-  y <- sf::st_make_valid(y)
-
-  y[!sf::st_is_empty(y), ]
+  sf::st_make_valid(y)
 }

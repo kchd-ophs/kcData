@@ -48,6 +48,23 @@ test_that("county city full", {
   expect_equal(act, exp)
 })
 
+test_that("county metro full", {
+  data <- readRDS(test_path("fixtures", "data_get_kc_sf.rds"))
+  local_mocked_bindings(get_sf = mock_output_sequence(
+    data$mock$cbsa, data$mock$county_ks, data$mock$county_mo
+  ))
+  act <- suppressWarnings(
+    get_kc_sf(
+      geo = "county",
+      year = 2024,
+      intersect = "metro",
+      geometry = "full"
+    )
+  )
+  exp <- data$out$county$metro_full
+  expect_equal(act, exp)
+})
+
 test_that("zcta city clipped", {
   data <- readRDS(test_path("fixtures", "data_get_kc_sf.rds"))
   local_mocked_bindings(get_sf = mock_output_sequence(
@@ -96,23 +113,6 @@ test_that("zcta metro clipped", {
     )
   )
   exp <- data$out$zcta$metro_clipped
-  expect_equal(act, exp)
-})
-
-test_that("county metro full", {
-  data <- readRDS(test_path("fixtures", "data_get_kc_sf.rds"))
-  local_mocked_bindings(get_sf = mock_output_sequence(
-    data$mock$cbsa, data$mock$county_ks, data$mock$county_mo
-  ))
-  act <- suppressWarnings(
-    get_kc_sf(
-      geo = "county",
-      year = 2024,
-      intersect = "metro",
-      geometry = "full"
-    )
-  )
-  exp <- data$out$county$metro_full
   expect_equal(act, exp)
 })
 

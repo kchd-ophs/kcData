@@ -16,12 +16,12 @@ map_plot <- function(x, y) {
     ggplot2::geom_sf(
       data = y,
       color = "red",
-      fill = "pink",
-      alpha = .5
+      fill = NA
     )
 }
 
-# Mocked input data
+# Mocked input data -------------------------------------------------------
+
 mock <- list()
 
 # CBSA/metro
@@ -49,6 +49,10 @@ r <- which(sf$COUNTYFP %in% c(
 ))
 sf <- sf[c(1:5, r), ]
 mock$county_mo <- sf
+
+# MO tracts
+sf <- get_sf("tract", 29, 2024, c("037", "047", "095", "165"))
+mock$tract_mo <- sf
 
 # KS ZCTAs
 sf <- get_sf("zcta", 20, 2024)
@@ -94,12 +98,15 @@ r <- which(sf$GEOID20 %in% c(
 sf <- sf[sort(unique(c(r, r + 1))), ]
 mock$zcta_mo <- sf
 
-# Output data
+# Output data -------------------------------------------------------------
+
 out <- list()
 
-# intersect = "city", boundary = "clipped"
+# Outer regions
 out$cbsa <- get_kc_sf("cbsa", 2024)
 out$place <- get_kc_sf("place", 2024)
+
+# intersect = "city", boundary = "clipped"
 out$county$city_clipped <- get_kc_sf("county", 2024, "city", "clipped")
 out$zcta$city_clipped <- get_kc_sf("zcta", 2024, "city", "clipped")
 
@@ -114,10 +121,11 @@ out$zcta$metro_clipped <- get_kc_sf("zcta", 2024, "metro", "clipped")
 out$county$metro_full <- get_kc_sf("county", 2024, "metro", "full")
 
 # Visualize
-map_plot(sf$county$city_full, sf$place)
-map_plot(sf$zcta$city_full, sf$place)
-map_plot(sf$zcta$metro_clipped, sf$cbsa)
-map_plot(sf$county$metro_full, sf$cbsa)
+map_plot(out$county$city_full, out$place)
+map_plot(out$county$city_clipped, out$place)
+map_plot(out$county$metro_full, out$cbsa)
+map_plot(out$zcta$city_full, out$place)
+map_plot(out$zcta$metro_clipped, out$cbsa)
 
 # Save
 data <- list(
