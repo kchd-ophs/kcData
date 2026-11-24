@@ -1,17 +1,7 @@
 # Get simple features objects for Kansas City
 
-Download a TIGER/Line shapefile containing
-
-- the Kansas City city boundary
-
-- the Kansas City metro region boundary
-
-- a set of smaller geographies intersecting with one of the above:
-  county, census tract, census block group, census block, or ZIP code
-  tabulation area (ZCTA)
-
-Shapefiles are downloaded from the US Census Bureau using the
-[tigris](https://github.com/walkerke/tigris) package.
+Download a TIGER/Line shapefile for a geography level consisting of
+areas that contain or intersect with Kansas City, MO.
 
 ## Usage
 
@@ -20,7 +10,7 @@ get_kc_sf(
   geo = c("cbsa", "place", "county", "tract", "block group", "block", "zcta"),
   year,
   intersect = c("city", "metro"),
-  geometry = c("clipped", "full")
+  clipped = TRUE
 )
 ```
 
@@ -28,25 +18,21 @@ get_kc_sf(
 
 - geo:
 
-  The shapefile geography. `"place"` returns the city boundary and
-  `"cbsa"` returns the metro region boundary.
+  The shapefile's geography level.
 
 - year:
 
-  The shapefile year.
+  The shapefile's year.
 
 - intersect:
 
-  If `geo` is not `"place"` or `"cbsa"`, this is the larger geography
-  that determines the intersection for the geography selected in `geo`.
-  If `"metro"` is selected, geographies in both Kansas and Missouri will
-  be returned.
+  The intersecting geography level. Ignored when `geo` is `"place"` or
+  `"cbsa"`.
 
-- geometry:
+- clipped:
 
-  If `geo` is not `"place"` or `"cbsa"`, return either the full
-  geometries or geometries clipped to the geography indicated in
-  `intersect`.
+  Logical: Should clipped or full geometries be returned? Ignored when
+  `geo` is `"place"` or `"cbsa"`.
 
 ## Value
 
@@ -54,11 +40,14 @@ A dataframe of class `sf` containing a simple feature list column.
 
 ## Details
 
-Geographies smaller than the city or metro region can contain the full
-geometry or geometries clipped to the city or metro region boundary. For
-these geographies, when `geometry = "clipped"` two additional variables
-are added for the feature's full area and the area within the city or
-metro region boundary.
+Geography levels smaller than the city (place) or metro region (CBSA)
+can contain either full geometries or geometries clipped to an
+intersecting geometry (indicated in `intersect`). Two additional
+variables are added to these shapefiles: the feature's area and the
+portion of the feature's area within the intersecting geometry.
+
+Shapefiles are downloaded from the US Census Bureau using the
+[tigris](https://github.com/walkerke/tigris) package.
 
 ## Additional resources
 
@@ -67,8 +56,6 @@ metro region boundary.
 
 - [Standard Hierarchy of Census Geographic
   Entities](https://www2.census.gov/geo/pdfs/reference/geodiagram.pdf)
-
-- [tigris package](https://github.com/walkerke/tigris)
 
 ## Examples
 
@@ -85,7 +72,7 @@ zctas <- get_kc_sf(
   geo = "zcta",
   year = 2024,
   intersect = "metro",
-  geometry = "full"
+  clipped = FALSE
 )
 } # }
 ```
