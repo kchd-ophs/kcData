@@ -1,45 +1,35 @@
 #' Get simple features objects for Kansas City
 #'
 #' @description
-#' Download a TIGER/Line shapefile containing
+#' Download a TIGER/Line shapefile for a geography level consisting of areas
+#' that contain or intersect with Kansas City, MO.
 #'
-#' - the Kansas City city boundary
-#' - the Kansas City metro region boundary
-#' - a set of smaller geographies intersecting with one of the above: county,
-#' census tract, census block group, census block, or ZIP code tabulation area
-#' (ZCTA)
+#' @details
+#' Geography levels smaller than the city (place) or metro region (CBSA) can
+#' contain either full geometries or geometries clipped to an intersecting
+#' geometry (indicated in `intersect`). Two additional variables are added to
+#' these shapefiles: the feature's area and the portion of the feature's area
+#' within the intersecting geometry.
 #'
 #' Shapefiles are downloaded from the US Census Bureau using the [tigris][tig]
 #' package.
 #'
 #' [tig]:https://github.com/walkerke/tigris
 #'
-#' @details
-#' Geographies smaller than the city or metro region can contain the full
-#' geometry or geometries clipped to the city or metro region boundary. For
-#' these geographies, when `geometry = "clipped"` two additional variables are
-#' added for the feature's full area and the area within the city or metro
-#' region boundary.
-#'
 #' # Additional resources
 #'
 #' - [TIGER/Line Shapefiles and TIGER/Line Files Technical Documentation][tl]
 #' - [Standard Hierarchy of Census Geographic Entities][geo]
-#' - [tigris package][tig]
 #'
 #' [tl]:https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/tiger-geo-line.html
 #' [geo]:https://www2.census.gov/geo/pdfs/reference/geodiagram.pdf
-#' [tig]:https://github.com/walkerke/tigris
 #'
-#' @param geo The shapefile geography. `"place"` returns the city boundary and
-#' `"cbsa"` returns the metro region boundary.
-#' @param year The shapefile year.
-#' @param intersect If `geo` is not `"place"` or `"cbsa"`, this is the larger
-#' geography that determines the intersection for the geography selected in
-#' `geo`. If `"metro"` is selected, geographies in both Kansas and Missouri will
-#' be  returned.
-#' @param geometry If `geo` is not `"place"` or `"cbsa"`, return either the full
-#' geometries or geometries clipped to the geography indicated in `intersect`.
+#' @param geo The shapefile's geography level.
+#' @param year The shapefile's year.
+#' @param intersect The intersecting geography level. Ignored when `geo` is
+#' `"place"` or `"cbsa"`.
+#' @param clipped Logical: Should clipped or full geometries be returned?
+#' Ignored when `geo` is `"place"` or `"cbsa"`.
 #'
 #' @returns A dataframe of class `sf` containing a simple feature list column.
 #' @export
@@ -57,7 +47,7 @@
 #'   geo = "zcta",
 #'   year = 2024,
 #'   intersect = "metro",
-#'   geometry = "full"
+#'   clipped = FALSE
 #' )
 #' }
 #'
@@ -65,7 +55,7 @@ get_kc_sf <- function(
   geo = c("cbsa", "place", "county", "tract", "block group", "block", "zcta"),
   year,
   intersect = c("city", "metro"),
-  geometry = c("clipped", "full")
+  clipped = TRUE
 ) {
   pkg <- requireNamespace("sf", quietly = TRUE)
 
@@ -79,7 +69,9 @@ get_kc_sf <- function(
 
   intersect <- match.arg(intersect)
 
-  geometry <- match.arg(geometry)
+  if (!is.logical(clipped) | is.na(clipped)) {
+    stop("`clipped` must be `TRUE` or `FALSE`")
+  }
 
   cond1 <- all(!geo %in% c("cbsa", "place"), intersect == "city")
 
@@ -87,11 +79,7 @@ get_kc_sf <- function(
 
   if (geo == "place" | cond1) {
     # Download the Missouri places shapefile
-    if (year == 2010) {
-      sf <- place2010
-    } else {
-      sf <- get_sf(geo = "place", state = 29, year = year)
-    }
+    sf <- get_sf(geo = "place", state = 29, year = year)
 
     # Filter for the KC boundary
     sf <- sf[which(sf$PLACEFP == "38000"), ]
@@ -113,12 +101,9 @@ get_kc_sf <- function(
 
   # Download a smaller geography
   if (intersect == "city") {
-    sf <- get_sf(
-      geo = geo,
-      state = 29, # MO only
-      year = year,
-      county = c("037", "047", "095", "165")
-    )
+    co <- c("037", "047", "095", "165")
+
+    sf <- get_sf(geo = geo, state = 29, year = year, county = co)
   } else if (intersect == "metro") {
     ksco <- c("091", "103", "107", "121", "209")
 
@@ -131,7 +116,16 @@ get_kc_sf <- function(
   }
 
   # Filter for geometries in `sf` that share interior with `parent_sf`
-  p <- "^GEOID(10|20)?$|IDFP00$|^ZCTA5CE00$"
+  p <- switch(
+    geo,
+    county = "^COUNTYFP$",
+    tract = "^TRACTCE",
+    `block group` = "^BKGPIDFP|^GEOID",
+    block = "^BLKIDFP|^GEOID",
+    zcta = "^ZCTA5CE"
+  )
+
+  # p <- "^GEOID(10|20)?$|IDFP00$|^ZCTA5CE00$"
 
   id_var <- colnames(sf)[grepl(p, colnames(sf))]
 
@@ -151,7 +145,7 @@ get_kc_sf <- function(
   # Clip `sf` using `parent_sf`
   sf_clp <- clip_sf(parent_sf, sf)
 
-  if (geometry == "clipped") {
+  if (clipped) {
     sf <- sf_clp
   }
 

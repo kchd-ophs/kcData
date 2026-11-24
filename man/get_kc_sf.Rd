@@ -8,51 +8,41 @@ get_kc_sf(
   geo = c("cbsa", "place", "county", "tract", "block group", "block", "zcta"),
   year,
   intersect = c("city", "metro"),
-  geometry = c("clipped", "full")
+  clipped = TRUE
 )
 }
 \arguments{
-\item{geo}{The shapefile geography. \code{"place"} returns the city boundary and
-\code{"cbsa"} returns the metro region boundary.}
+\item{geo}{The shapefile's geography level.}
 
-\item{year}{The shapefile year.}
+\item{year}{The shapefile's year.}
 
-\item{intersect}{If \code{geo} is not \code{"place"} or \code{"cbsa"}, this is the larger
-geography that determines the intersection for the geography selected in
-\code{geo}. If \code{"metro"} is selected, geographies in both Kansas and Missouri will
-be  returned.}
+\item{intersect}{The intersecting geography level. Ignored when \code{geo} is
+\code{"place"} or \code{"cbsa"}.}
 
-\item{geometry}{If \code{geo} is not \code{"place"} or \code{"cbsa"}, return either the full
-geometries or geometries clipped to the geography indicated in \code{intersect}.}
+\item{clipped}{Logical: Should clipped or full geometries be returned?
+Ignored when \code{geo} is \code{"place"} or \code{"cbsa"}.}
 }
 \value{
 A dataframe of class \code{sf} containing a simple feature list column.
 }
 \description{
-Download a TIGER/Line shapefile containing
-\itemize{
-\item the Kansas City city boundary
-\item the Kansas City metro region boundary
-\item a set of smaller geographies intersecting with one of the above: county,
-census tract, census block group, census block, or ZIP code tabulation area
-(ZCTA)
+Download a TIGER/Line shapefile for a geography level consisting of areas
+that contain or intersect with Kansas City, MO.
 }
+\details{
+Geography levels smaller than the city (place) or metro region (CBSA) can
+contain either full geometries or geometries clipped to an intersecting
+geometry (indicated in \code{intersect}). Two additional variables are added to
+these shapefiles: the feature's area and the portion of the feature's area
+within the intersecting geometry.
 
 Shapefiles are downloaded from the US Census Bureau using the \href{https://github.com/walkerke/tigris}{tigris}
 package.
-}
-\details{
-Geographies smaller than the city or metro region can contain the full
-geometry or geometries clipped to the city or metro region boundary. For
-these geographies, when \code{geometry = "clipped"} two additional variables are
-added for the feature's full area and the area within the city or metro
-region boundary.
 }
 \section{Additional resources}{
 \itemize{
 \item \href{https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/tiger-geo-line.html}{TIGER/Line Shapefiles and TIGER/Line Files Technical Documentation}
 \item \href{https://www2.census.gov/geo/pdfs/reference/geodiagram.pdf}{Standard Hierarchy of Census Geographic Entities}
-\item \href{https://github.com/walkerke/tigris}{tigris package}
 }
 }
 
@@ -69,7 +59,7 @@ zctas <- get_kc_sf(
   geo = "zcta",
   year = 2024,
   intersect = "metro",
-  geometry = "full"
+  clipped = FALSE
 )
 }
 

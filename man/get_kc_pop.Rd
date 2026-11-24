@@ -91,7 +91,7 @@ block <- get_kc_sf(
   geo = "block",
   year = 2024,
   intersect = "city",
-  geometry = "full"
+  clipped = FALSE
 )
 
 geoid_block <- block$GEOID20

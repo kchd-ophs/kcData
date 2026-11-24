@@ -24,7 +24,7 @@ test_that("county city clipped", {
       geo = "county",
       year = 2024,
       intersect = "city",
-      geometry = "clipped"
+      clipped = TRUE
     )
   )
   exp <- data$out$county$city_clipped
@@ -41,7 +41,7 @@ test_that("county city full", {
       geo = "county",
       year = 2024,
       intersect = "city",
-      geometry = "full"
+      clipped = FALSE
     )
   )
   exp <- data$out$county$city_full
@@ -58,7 +58,7 @@ test_that("county metro full", {
       geo = "county",
       year = 2024,
       intersect = "metro",
-      geometry = "full"
+      clipped = FALSE
     )
   )
   exp <- data$out$county$metro_full
@@ -75,7 +75,7 @@ test_that("zcta city clipped", {
       geo = "zcta",
       year = 2024,
       intersect = "city",
-      geometry = "clipped"
+      clipped = TRUE
     )
   )
   exp <- data$out$zcta$city_clipped
@@ -92,7 +92,7 @@ test_that("zcta city full", {
       geo = "zcta",
       year = 2024,
       intersect = "city",
-      geometry = "full"
+      clipped = FALSE
     )
   )
   exp <- data$out$zcta$city_full
@@ -109,18 +109,9 @@ test_that("zcta metro clipped", {
       geo = "zcta",
       year = 2024,
       intersect = "metro",
-      geometry = "clipped"
+      clipped = TRUE
     )
   )
   exp <- data$out$zcta$metro_clipped
-  expect_equal(act, exp)
-})
-
-test_that("place 2010", {
-  act <- suppressWarnings(
-    get_kc_sf("place", 2010)
-  )
-  exp <- place2010
-  rownames(exp) <- NULL
   expect_equal(act, exp)
 })
